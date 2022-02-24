@@ -1,6 +1,7 @@
 var express  = require("express")
 var router = express.Router();
 var {InsertStudent} = require("../controllers/StudentController");
+var {DashboardView, ManageStudent} = require("../controllers/AdminController");
 
 
 router.get("/",(req,res) => {
@@ -14,4 +15,8 @@ router.get("/apply",(req,res) => {
 router.post("/apply",InsertStudent);
 
 
-module.exports = router;
+// admin routes 
+router.get("/admin/dashboard",DashboardView);
+router.get("/admin/manage-students",ManageStudent);
+
+module.exports = router; 

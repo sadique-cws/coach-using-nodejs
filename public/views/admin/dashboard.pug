@@ -1,0 +1,25 @@
+extend base.pug
+
+block content
+    .row 
+        .col-3 
+            .card.border.border-danger.mb-3
+                .card-body 
+                    h1.display-6.text-danger=students
+                    p.small.text-muted Total Students
+        .col-3 
+            .card.border.border-info.mb-3
+                .card-body 
+                    h1.display-6.text-info 5000/-
+                    p.small.text-muted Total Paid
+        .col-3
+            .card.border.border-success.mb-3
+                .card-body 
+                    h1.display-6.text-success 4000/-
+                    p.small.text-muted Total Due
+        .col-3 
+            .card.border.border-primary.mb-3
+                .card-body 
+                    h1.display-6.text-primary 50
+                    p.small.text-muted Total Courses
+    

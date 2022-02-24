@@ -10,11 +10,10 @@ function InsertStudent(req,res){
         gender : req.body.gender,
         education : req.body.education,
         father_name : req.body.father_name,
+        password : req.body.password
     });
 
     stud.save();
-
-
 }
 
 module.exports = {
