@@ -8,7 +8,8 @@ var StudentModel = mongoose.Schema({
     address : {type:String,require:true},
     gender : {type:String,require:true},
     education : {type:String,require:false},
-    password : {type:String,require:true}
+    password : {type:String,require:true},
+    status: {type:Number,require:true,default:1}
 });
 
 
