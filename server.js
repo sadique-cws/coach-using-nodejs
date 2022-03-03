@@ -10,9 +10,6 @@ app.use(session({
     secret:"testing dasfasdfadsf fsafa sd",
     resave:false,
     saveUninitialized:false,
-    cookie:{
-        secure:true
-    }
 }))
 var urlEncoded = bodyParser.urlencoded({extended:false})
 

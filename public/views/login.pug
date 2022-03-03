@@ -1,0 +1,19 @@
+extend base.pug
+
+block content 
+    .container-fluid.p-0.mt-5
+            .row.g-0
+                .col-4.mx-auto 
+                    .card 
+                        .card-header    
+                            h1.card-title.h4 Admin Login
+                        .card-body
+                            form(action="",method="post")
+                                .mb-3 
+                                    label(for="") Email/user 
+                                    input.form-control(type="text",name="email") 
+                                .mb-3 
+                                    label(for="") Password
+                                    input.form-control(type="password",name="password")
+                                .mb-3 
+                                    input.btn.btn-success.w-100(type="submit")

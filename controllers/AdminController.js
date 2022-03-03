@@ -1,11 +1,10 @@
 var studentModel = require("../models/StudentModels");
 var AdminModel = require("../models/AdminModels");
+const { response } = require("express");
 
 
 
 async function DashboardView(req,res){
-    // req.session.user_id = "12345";
-    console.log(req.session.user_id)
     const students = await studentModel.countDocuments();
     res.render("admin/dashboard",{"students": students});
 }
@@ -33,7 +32,6 @@ async function ApproveStudent(req,res){
 }
 
 // admin insertion work
-
 function InsertAdmin(req,res){
     var admin = new AdminModel({
         name: "admin",
@@ -43,6 +41,29 @@ function InsertAdmin(req,res){
 
     admin.save();
 }
+
+ checkAdminLogin = async (req,res) => {
+     try{
+         const {email, password} = req.body;
+         const checkData = await AdminModel.findOne({email:email});
+         if(checkData != null){
+             if(checkData.email == email && checkData.password == password){
+                req.session.user_id = checkData._id;
+                console.log("this is testing: " + req.session.user_id)
+                res.redirect("/admin/dashboard");     
+             }
+         }
+        else{
+            var err = new Error("Username or password in incorrect try again")
+            err.status = 401;
+            res.redirect("/admin/login");
+        }
+    }
+    catch(error){
+        console.log(error);
+    }
+};
+    
 module.exports = {
     DashboardView,
     ManageStudent,
@@ -50,4 +71,5 @@ module.exports = {
     ViewStudent,
     ApproveStudent,
     InsertAdmin,
+    checkAdminLogin,
 }

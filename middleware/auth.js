@@ -7,9 +7,7 @@ module.exports.isAuthorized = function(req,res,next){
         }
         else{
             if(admin === null){
-                var err = new Error("not authorized! go back")
-                err.status = 401;
-                return next(err);
+                 res.redirect("/admin/login");
             }
             else{
                 return next();
