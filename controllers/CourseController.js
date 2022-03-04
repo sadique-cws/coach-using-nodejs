@@ -1,3 +1,4 @@
+const { response } = require("express");
 var CourseCategoryModel = require("../models/CourseCategoryModel");
 var CourseModel = require("../models/CourseModels");
 
@@ -19,10 +20,16 @@ function InsertCourseForm(req,res){
     })
 }
 
+function ManageCourses(req, res){
+    CourseModel.find({},(error, response) => {
+        res.render("admin/manageCourse",{"courses": response})
+    })
+}
+
 // post method insert function 
 function InsertCourse(req,res){
     var course = new CourseModel({
-        name: req.body.name,
+        title: req.body.name,
         instructor : req.body.instructor,
         duration: req.body.duration,
         price: req.body.price,
@@ -31,6 +38,7 @@ function InsertCourse(req,res){
         category_id : req.body.category_id,
         description : req.body.description,
     });
+
 
     course.save();
     res.redirect("/admin/courses");
@@ -41,5 +49,6 @@ function InsertCourse(req,res){
 module.exports = {
     InsertCourseCategory,
     InsertCourseForm,
-    InsertCourse
+    InsertCourse,
+    ManageCourses,
 }
