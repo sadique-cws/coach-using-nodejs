@@ -4,24 +4,21 @@ block content
     table.table 
         tr 
             th Name
-            th Father
-            th Contact
-            th Email
-            th Address
-            th education
-            th Gender
+            th Duration
+            th Instructor
+            th Fee
+            th Description
+            th category
             th Action
         each val in courses 
             tr 
             td=val.title
-            td=val.father_name
-            td=val.contact
-            td=val.email
-            td=val.address
-            td=val.education
-            td=val.gender
+            td=`${val.duration} Months`
+            td=val.instructor
+            td=val.discount_price
+                span.text-muted.small=val.price
+            td=val.description
+            td=val.category_id.cat_title
             td 
                 a.btn.btn-danger(href="")
-                    i.bi.bi-trash-fill 
-                a.btn.btn-success.ms-2(href=`/admin/student/${val._id}/view/`)
-                    i.bi.bi-eye
+                    i.bi.bi-trash-fill

@@ -20,10 +20,9 @@ function InsertCourseForm(req,res){
     })
 }
 
-function ManageCourses(req, res){
-    CourseModel.find({},(error, response) => {
-        res.render("admin/manageCourse",{"courses": response})
-    })
+async function ManageCourses(req, res){
+    var data = await CourseModel.find({}).populate("category_id");
+    res.render("admin/manageCourse",{"courses": data})
 }
 
 // post method insert function 
