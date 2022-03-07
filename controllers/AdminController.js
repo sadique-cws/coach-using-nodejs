@@ -2,6 +2,7 @@ var studentModel = require("../models/StudentModels");
 var AdminModel = require("../models/AdminModels");
 var CourseModel = require("../models/CourseModels");
 const { response } = require("express");
+const res = require("express/lib/response");
 
 
 
@@ -46,6 +47,7 @@ function InsertAdmin(req,res){
 }
 
  checkAdminLogin = async (req,res) => {
+    
      try{
          const {email, password} = req.body;
          const checkData = await AdminModel.findOne({email:email});
@@ -67,6 +69,11 @@ function InsertAdmin(req,res){
     }
 };
     
+function logout(req,res){
+    req.session.destroy();
+    res.redirect("/admin/login");
+}
+
 module.exports = {
     DashboardView,
     ManageStudent,
@@ -75,4 +82,5 @@ module.exports = {
     ApproveStudent,
     InsertAdmin,
     checkAdminLogin,
+    logout,
 }

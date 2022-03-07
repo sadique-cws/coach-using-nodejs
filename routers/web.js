@@ -1,8 +1,8 @@
 var express  = require("express")
 var router = express.Router();
-var {InsertStudent} = require("../controllers/StudentController");
+var {InsertStudent, checkLogin} = require("../controllers/StudentController");
 var {InsertCourseForm, InsertCourseCategory,InsertCourse, ManageCourses} = require("../controllers/CourseController");
-var {DashboardView, ManageStudent, NewAdmission, ViewStudent, ApproveStudent, InsertAdmin, checkAdminLogin} = require("../controllers/AdminController");
+var {DashboardView, ManageStudent, NewAdmission, ViewStudent, ApproveStudent, InsertAdmin, checkAdminLogin, logout} = require("../controllers/AdminController");
 const { route } = require("express/lib/application");
 var auth = require("../middleware/auth");
 
@@ -28,8 +28,20 @@ router.get("/admin/insert-course",auth.isAuthorized,InsertCourseForm)
 router.post("/admin/insert-course-category",auth.isAuthorized,InsertCourseCategory)
 router.post("/admin/insert-course",auth.isAuthorized,InsertCourse)
 router.get("/admin/register",auth.isAuthorized,InsertAdmin)
-router.get("/admin/login", (req,res) => res.render("login"));
+router.get("/admin/login", (req,res) => {
+    if(req.session.user_id){
+        return res.redirect("/admin/dashboard");
+    }
+    res.render("login")
+});
 router.post("/admin/login", checkAdminLogin);
+router.get("/admin/logout", logout);
+
+
+//student routes 
+router.get("/student/dashboard",(req,res)=>res.send("dashboard working ballee ballee"));
+router.post("/student/login",checkLogin);
+
 
 
 module.exports = router;

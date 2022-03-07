@@ -1,44 +1,50 @@
 extend base.pug
 
-block content 
-    .container 
+block content
+    include nav.pug
+    .container.mt-5
         .row 
             .col-6.mx-auto 
-                .card 
-                    .card-body 
+                .card
+                    .card-body
+                        h5.text-uppercase.text-primary Apply for Admission
+                        hr 
                         form(action="", method="post")
-                            .mb-3 
-                                label(for="") name 
-                                input.form-control(type="text",name="name") 
-                            .mb-3 
-                                label(for="") father 
-                                input.form-control(type="text",name="father_name") 
-                            .mb-3
-                                label(for="") Contact 
-                                input.form-control(type="text",name="contact") 
-                            .mb-3
-                                label(for="") email 
-                                input.form-control(type="text",name="email") 
-                            .mb-3
-                                label(for="") Address 
-                                input.form-control(type="text",name="address")
-                            .mb-3
-                                label(for="") Gender
-                                .d-flex
-                                    .form-check.me-2 
-                                        input.form-check-input(type="radio",name="gender",value="Male")
-                                        label(for="").form-check-label Male 
-                                    .form-check.me-2
-                                        input.form-check-input(type="radio",name="gender",value="Female")
-                                        label(for="").form-check-label Female
-                                    .form-check.me-2 
-                                        input.form-check-input(type="radio",name="gender",value="Other")
-                                        label(for="").form-check-label Other 
-                            .mb-3
-                                label(for="") education (currently)
-                                input.form-control(type="text",name="education")
-                            .mb-3
-                                label(for="") Password
-                                input.form-control(type="password",name="password")
+                            .row 
+                                .mb-3.col-12
+                                    label(for="") name 
+                                    input.form-control(type="text",name="name") 
+                                .mb-3.col-12 
+                                    label(for="") father 
+                                    input.form-control(type="text",name="father_name") 
+                                .mb-3.col-12
+                                    label(for="") address 
+                                    input.form-control(type="text",name="address") 
+                            .row 
+                                .mb-3.col
+                                    label(for="") email 
+                                    input.form-control(type="text",name="email") 
+                                .mb-3.col
+                                    label(for="") Contact 
+                                    input.form-control(type="text",name="contact")
+                                .mb-3.col
+                                    label(for="") Gender
+                                    .d-flex.border.rounded.p-1.shadow-sm
+                                        .form-check.me-2 
+                                            input.form-check-input(type="radio",name="gender",value="Male",checked)
+                                            label(for="").form-check-label Male 
+                                        .form-check.me-2
+                                            input.form-check-input(type="radio",name="gender",value="Female")
+                                            label(for="").form-check-label Female
+                                        .form-check.me-2 
+                                            input.form-check-input(type="radio",name="gender",value="Other")
+                                            label(for="").form-check-label Other 
+                            .row 
+                                .mb-3.col
+                                    label(for="") education (currently)
+                                    input.form-control(type="text",name="education")
+                                .mb-3.col
+                                    label(for="") Password
+                                    input.form-control(type="password",name="password")
                             .mb-3
                                 input.btn.btn-success.w-100(type="submit",name="send")
