@@ -1,12 +1,15 @@
 var studentModel = require("../models/StudentModels");
 var AdminModel = require("../models/AdminModels");
+var CourseModel = require("../models/CourseModels");
 const { response } = require("express");
 
 
 
 async function DashboardView(req,res){
     const students = await studentModel.countDocuments();
-    res.render("admin/dashboard",{"students": students});
+    const courses = await CourseModel.countDocuments();
+    const NewAdmission = await studentModel.find({status:1}).countDocuments();
+    res.render("admin/dashboard",{"students": students,"courses":courses,"newAdmission":NewAdmission});
 }
 
 function ManageStudent(req,res){

@@ -1,6 +1,11 @@
 extend base.pug 
 
 block content 
+    .row.mb-3
+        .col-8 
+            h4.mt-1 Manage Course 
+        .col-4 
+            a.btn.btn-success(href="/admin/insert-course").float-end Create new Course 
     table.table 
         tr 
             th Name
