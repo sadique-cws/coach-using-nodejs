@@ -1,6 +1,10 @@
 var studentModel = require("../models/StudentModels");
 
 
+function dashboard(req,res){
+    return res.render("students/dashboard")
+}   
+
 function addStudentCourse(){
     // pending works
 }
@@ -49,4 +53,5 @@ module.exports = {
     InsertStudent,
     addStudentCourse,
     checkLogin,
+    dashboard,
 }

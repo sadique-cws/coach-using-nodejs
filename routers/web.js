@@ -1,6 +1,6 @@
 var express  = require("express")
 var router = express.Router();
-var {InsertStudent, checkLogin} = require("../controllers/StudentController");
+var {InsertStudent, checkLogin, dashboard} = require("../controllers/StudentController");
 var {InsertCourseForm, InsertCourseCategory,InsertCourse, ManageCourses} = require("../controllers/CourseController");
 var {DashboardView, ManageStudent, NewAdmission, ViewStudent, ApproveStudent, InsertAdmin, checkAdminLogin, logout} = require("../controllers/AdminController");
 const { route } = require("express/lib/application");
@@ -39,7 +39,7 @@ router.get("/admin/logout", logout);
 
 
 //student routes 
-router.get("/student/dashboard",(req,res)=>res.send("dashboard working ballee ballee"));
+router.get("/student/dashboard",auth.isStudentAuthorized,dashboard);
 router.post("/student/login",checkLogin);
 
 
