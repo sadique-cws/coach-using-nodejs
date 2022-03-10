@@ -1,13 +1,46 @@
+const res = require("express/lib/response");
+const courseModel = require("../models/CourseModels");
+const studentCourse = require("../models/StudentCourseModels");
 var studentModel = require("../models/StudentModels");
 
 
 function dashboard(req,res){
-    return res.render("students/dashboard")
+    studentModel.findById(req.session.student_id,(error, response) => {
+        return res.render("students/dashboard",{"student":response})
+    });
 }   
 
-function addStudentCourse(){
-    // pending works
+async function addStudentCourse(req,res){
+    var log = req.session.student_id;
+    std = await studentModel.findById(log);
+    courseData = await courseModel.find({});
+    return res.render("students/addCourse",{"student":std,"course":courseData});
 }
+
+
+
+async function addStudentCourseStore(req,res){
+    var log = req.session.student_id;
+    std = await studentModel.findById(log);
+    var currentDate = new Date();
+    var stdCourse = studentCourse({
+        studentId:std._id,
+        courseId:req.body.courseId,
+        doj : currentDate,
+        status : 1
+    });
+
+    stdCourse.save();
+    res.redirect("/student/course/manage");
+}
+
+async function manageStudentCourse(req,res){
+    var log = req.session.student_id;
+    std = await studentModel.findById(log);
+    stdCourse = await studentCourse.find({studentId:log}).populate("courseId");
+    res.render("students/manageCourse",{'student':std,"studentCourse":stdCourse})
+}
+
 
 checkLogin = async (req,res) => {
     
@@ -54,4 +87,6 @@ module.exports = {
     addStudentCourse,
     checkLogin,
     dashboard,
+    manageStudentCourse,
+    addStudentCourseStore,
 }

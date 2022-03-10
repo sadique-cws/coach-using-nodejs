@@ -1,6 +1,6 @@
 var express  = require("express")
 var router = express.Router();
-var {InsertStudent, checkLogin, dashboard} = require("../controllers/StudentController");
+var {InsertStudent, checkLogin, dashboard, manageStudentCourse, addStudentCourse, addStudentCourseStore} = require("../controllers/StudentController");
 var {InsertCourseForm, InsertCourseCategory,InsertCourse, ManageCourses} = require("../controllers/CourseController");
 var {DashboardView, ManageStudent, NewAdmission, ViewStudent, ApproveStudent, InsertAdmin, checkAdminLogin, logout} = require("../controllers/AdminController");
 const { route } = require("express/lib/application");
@@ -40,6 +40,9 @@ router.get("/admin/logout", logout);
 
 //student routes 
 router.get("/student/dashboard",auth.isStudentAuthorized,dashboard);
+router.get("/student/course/manage",auth.isStudentAuthorized,manageStudentCourse);
+router.get("/student/course/add",auth.isStudentAuthorized,addStudentCourse);
+router.post("/student/course/add",auth.isStudentAuthorized,addStudentCourseStore);
 router.post("/student/login",checkLogin);
 
 

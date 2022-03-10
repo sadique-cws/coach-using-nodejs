@@ -9,5 +9,9 @@ nav.navbar.navbar-expand-lg.navbar-dark.bg-primary.py-3
                 a.nav-link(href="") About 
             li.nav-item
                 a.nav-link(href="") Course 
-            li.nav-item
-                a.btn.btn-danger(href="/apply") Apply for Admission  
+            if session.student_id
+                li.nav-item
+                    a.btn.btn-danger(href="/apply") Logout
+            else 
+                li.nav-item
+                    a.btn.btn-danger(href="/apply") Apply for Admission 

@@ -1,0 +1,28 @@
+extends base.pug
+
+block content
+    .container.mt-5
+        .row 
+            .col-3 
+                .card 
+                    img.card-img-top(src="https://th.bing.com/th/id/OIP.i_1f7CqIL7kr4oHugT7QvgAAAA?pid=ImgDet&rs=1", alt="")
+                    .card-body 
+                        h2.card-title.h5=student.name 
+                        h6=student.email 
+            .col-9 
+                .container
+                    table.table 
+                        tr 
+                            th Course Title
+                            th Fee
+                            th Duration
+                            th Joining Date
+                            th Action
+                        each x in studentCourse
+                            tr
+                                td=x.courseId.title
+                                td=x.courseId.price
+                                td=x.courseId.duration
+                                td=x.doj
+                                td
+                                    a.btn.btn-danger.btn-sm(href="") delete
