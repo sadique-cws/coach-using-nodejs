@@ -1,43 +1,76 @@
 const res = require("express/lib/response");
 const courseModel = require("../models/CourseModels");
+const paymentModel = require("../models/PaymentModels");
 const studentCourse = require("../models/StudentCourseModels");
 var studentModel = require("../models/StudentModels");
 
+async function getUser(req){
+    std = await studentModel.findById(req.session.student_id)
+    return std;
+} 
 
-function dashboard(req,res){
-    studentModel.findById(req.session.student_id,(error, response) => {
-        return res.render("students/dashboard",{"student":response})
-    });
-}   
+async function dashboard(req,res){
+    data = await getUser(req);
+    return res.render("students/dashboard",{student:data})
+} 
+
+async function generatePayment(req,res){
+    var log = req.session.student_id;
+    stdCourse = await studentCourse.find({studentId:log}).populate("courseId");
+    console.log(stdCourse)
+
+    doj = stdCourse[0].doj;
+
+    currentDate = new Date();
+    
+    console.log(doj);
+    // payment = paymentModel({
+
+    // });
+}
+
+async function managePayment(req,res){
+    generatePayment(req,res);
+    std = await getUser(req);
+    studentPayment = await paymentModel.find({stdId:std._id}).populate("courseId")
+    res.render("students/managePayment",{studentPayment:studentPayment,student:std});
+}
 
 async function addStudentCourse(req,res){
-    var log = req.session.student_id;
-    std = await studentModel.findById(log);
     courseData = await courseModel.find({});
-    return res.render("students/addCourse",{"student":std,"course":courseData});
+    std = await getUser(req);
+    return res.render("students/addCourse",{student:std,"course":courseData});
 }
 
 
 
 async function addStudentCourseStore(req,res){
-    var log = req.session.student_id;
-    std = await studentModel.findById(log);
-    var currentDate = new Date();
-    var stdCourse = studentCourse({
-        studentId:std._id,
-        courseId:req.body.courseId,
-        doj : currentDate,
-        status : 1
-    });
 
-    stdCourse.save();
-    res.redirect("/student/course/manage");
+    std = await getUser(req);
+    stdCourse = await studentCourse.exists({'studentId':std._id,"courseId":req.body.courseId}).then((exist) => {
+        if(exist){
+            res.redirect("/student/course/manage");
+        }
+        else{
+            var currentDate = new Date();
+            var stdCourse = studentCourse({
+                studentId:std._id,
+                courseId:req.body.courseId,
+                doj : currentDate,
+                status : 1
+            });
+        
+            stdCourse.save();
+            res.redirect("/student/course/manage");
+        }
+    })
+
+   
 }
 
 async function manageStudentCourse(req,res){
-    var log = req.session.student_id;
-    std = await studentModel.findById(log);
-    stdCourse = await studentCourse.find({studentId:log}).populate("courseId");
+    std = getUser(req);
+    stdCourse = await studentCourse.find({studentId:std._id}).populate("courseId");
     res.render("students/manageCourse",{'student':std,"studentCourse":stdCourse})
 }
 
@@ -89,4 +122,5 @@ module.exports = {
     dashboard,
     manageStudentCourse,
     addStudentCourseStore,
+    managePayment,
 }
