@@ -1,4 +1,5 @@
 const res = require("express/lib/response");
+const moment = require("moment");
 const courseModel = require("../models/CourseModels");
 const paymentModel = require("../models/PaymentModels");
 const studentCourse = require("../models/StudentCourseModels");
@@ -22,11 +23,63 @@ async function generatePayment(req,res){
     doj = stdCourse[0].doj;
 
     currentDate = new Date();
-    
-    console.log(doj);
-    // payment = paymentModel({
+    CurrYear = currentDate.getFullYear();
+    currMonth = currentDate.getMonth() + 1;
+    currDate = currentDate.getDate();
 
-    // });
+    dateOfJoin = new Date(doj)
+    dojYear = dateOfJoin.getFullYear();
+    dojMonth = dateOfJoin.getMonth() + 1;
+    dojDate = dateOfJoin.getDate();
+
+
+    diffMonth = moment([CurrYear,currMonth,currDate]).diff(moment([dojYear,dojMonth,dojDate]),"months")
+
+    var counterMonth = dojMonth;
+    var counterYear = dojYear;
+
+    for(i=0;i<diffMonth;i++){
+        var filter = {
+            stdId:log,
+            courseId:stdCourse[0].courseId,
+            month:counterMonth,
+            year:counterYear,
+            dop: currentDate,
+            amount : 700,
+        };
+        var checkPaymentRecord = await paymentModel.exists({
+            "stdId":log,
+            "courseId":stdCourse[0].courseId,
+            "month":counterMonth,
+            "year":counterYear,
+            "dop": currentDate,
+            "amount" : 700,
+        }).then((exist) => {
+            if(exist){
+                console.log("testing")
+            }
+            else{
+                var paymentInsert = paymentModel(filter)
+                paymentInsert.save();
+            }
+        })
+       
+        
+        if(counterMonth > 11){
+            counterMonth/= 12;
+            counterYear++;
+            
+        }
+        else{
+            counterMonth++;
+        }
+
+        
+    }
+
+
+    console.log();
+    
 }
 
 async function managePayment(req,res){
@@ -69,7 +122,7 @@ async function addStudentCourseStore(req,res){
 }
 
 async function manageStudentCourse(req,res){
-    std = getUser(req);
+    std = await getUser(req);
     stdCourse = await studentCourse.find({studentId:std._id}).populate("courseId");
     res.render("students/manageCourse",{'student':std,"studentCourse":stdCourse})
 }
