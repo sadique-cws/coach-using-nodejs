@@ -15,14 +15,26 @@ block content
                         tr 
                             th Course Title
                             th Fee
+                            th Payment Month
                             th Status
-                            th Date of Payment
                             th Action
                         each x in studentPayment
                             tr
                                 td=x.courseId.title
                                 td=x.amount
-                                td=x.status
-                                td=x.dop
+                                td #{x.month}/#{x.year}
                                 td
-                                    a.btn.btn-danger.btn-sm(href="") delete
+                                    if x.status==0
+                                        .text-danger Pending
+                                    else if x.status == -1
+                                        .text-warning requested 
+                                    else if x.status == 1
+                                        .text-success paid
+
+                                td
+                                    if x.status == 0
+                                        a.btn.btn-warning.btn-sm(href=`/student/payment/manage/${x._id}/request`) Request Payment
+                                    else if x.status==-1
+                                        a.disabled.btn.btn-warning Requested
+                                    else 
+                                        a.disabled.fw-bolder.btn.btn-success Done

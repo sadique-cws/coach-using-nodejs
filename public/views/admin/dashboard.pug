@@ -22,4 +22,18 @@ block content
                 .card-body 
                     h1.display-6.text-primary=courses
                     p.small.text-muted Total Courses
-    
+    .row 
+        .col-6 
+            table.table 
+                tr 
+                    th Student
+                    th Month
+                    th Course
+                    th Action 
+                each x in requestedPayment
+                    tr
+                        td=x.stdId.name
+                        td #{x.month}/#{x.year}
+                        td=x.courseId.title
+                        td 
+                            a.btn.btn-success(href=`/admin/payment/${x._id}/approve`) Approve 

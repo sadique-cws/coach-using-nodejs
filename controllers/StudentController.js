@@ -15,7 +15,16 @@ async function dashboard(req,res){
     return res.render("students/dashboard",{student:data})
 } 
 
+function requstPayment(req,res){
+    pay_id = req.params.p_id;
+    paymentModel.updateOne({_id:pay_id},{status:-1},(error, response)=>{
+        if(error) {console.log(error)};
+        return res.redirect("/student/payment/manage");
+    })    
+}
+
 async function generatePayment(req,res){
+    // await paymentModel.deleteMany({price:700})
     var log = req.session.student_id;
     stdCourse = await studentCourse.find({studentId:log}).populate("courseId");
     console.log(stdCourse)
@@ -39,34 +48,31 @@ async function generatePayment(req,res){
     var counterYear = dojYear;
 
     for(i=0;i<diffMonth;i++){
-        var filter = {
+        
+        var checkPaymentRecord = await paymentModel.exists({
             stdId:log,
             courseId:stdCourse[0].courseId,
             month:counterMonth,
             year:counterYear,
-            dop: currentDate,
-            amount : 700,
-        };
-        var checkPaymentRecord = await paymentModel.exists({
-            "stdId":log,
-            "courseId":stdCourse[0].courseId,
-            "month":counterMonth,
-            "year":counterYear,
-            "dop": currentDate,
-            "amount" : 700,
         }).then((exist) => {
             if(exist){
-                console.log("testing")
+                // console.log()
             }
             else{
-                var paymentInsert = paymentModel(filter)
-                paymentInsert.save();
+                paymentModel.create({
+                    stdId:log,
+                    courseId:stdCourse[0].courseId,
+                    month:counterMonth,
+                    year:counterYear,
+                    dop: currentDate,
+                    amount : 700,
+                })
             }
         })
        
         
         if(counterMonth > 11){
-            counterMonth/= 12;
+            counterMonth /= 12;
             counterYear++;
             
         }
@@ -83,7 +89,7 @@ async function generatePayment(req,res){
 }
 
 async function managePayment(req,res){
-    generatePayment(req,res);
+    await generatePayment(req,res);
     std = await getUser(req);
     studentPayment = await paymentModel.find({stdId:std._id}).populate("courseId")
     res.render("students/managePayment",{studentPayment:studentPayment,student:std});
@@ -176,4 +182,5 @@ module.exports = {
     manageStudentCourse,
     addStudentCourseStore,
     managePayment,
+    requstPayment,
 }

@@ -1,8 +1,8 @@
 var express  = require("express")
 var router = express.Router();
-var {InsertStudent, checkLogin, dashboard, manageStudentCourse, addStudentCourse, addStudentCourseStore, managePayment} = require("../controllers/StudentController");
+var {InsertStudent, checkLogin, dashboard, manageStudentCourse, addStudentCourse, addStudentCourseStore, managePayment,requstPayment} = require("../controllers/StudentController");
 var {InsertCourseForm, InsertCourseCategory,InsertCourse, ManageCourses} = require("../controllers/CourseController");
-var {DashboardView, ManageStudent, NewAdmission, ViewStudent, ApproveStudent, InsertAdmin, checkAdminLogin, logout} = require("../controllers/AdminController");
+var {DashboardView, ManageStudent, NewAdmission, ViewStudent, ApproveStudent, InsertAdmin, checkAdminLogin, logout, approvePayment} = require("../controllers/AdminController");
 const { route } = require("express/lib/application");
 var auth = require("../middleware/auth");
 
@@ -28,6 +28,8 @@ router.get("/admin/insert-course",auth.isAuthorized,InsertCourseForm)
 router.post("/admin/insert-course-category",auth.isAuthorized,InsertCourseCategory)
 router.post("/admin/insert-course",auth.isAuthorized,InsertCourse)
 router.get("/admin/register",auth.isAuthorized,InsertAdmin)
+router.get("/admin/payment/:p_id/approve",auth.isAuthorized,approvePayment)
+
 router.get("/admin/login", (req,res) => {
     if(req.session.user_id){
         return res.redirect("/admin/dashboard");
@@ -43,6 +45,7 @@ router.get("/student/dashboard",auth.isStudentAuthorized,dashboard);
 router.get("/student/course/manage",auth.isStudentAuthorized,manageStudentCourse);
 router.get("/student/course/add",auth.isStudentAuthorized,addStudentCourse);
 router.get("/student/payment/manage",auth.isStudentAuthorized,managePayment);
+router.get("/student/payment/manage/:p_id/request",auth.isStudentAuthorized,requstPayment);
 router.post("/student/course/add",auth.isStudentAuthorized,addStudentCourseStore);
 router.post("/student/login",checkLogin);
 
